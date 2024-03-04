@@ -58,15 +58,3 @@ function Menu() {
     }
   }
 }
-
-//promise
-
-//async function that awaits promise
-
-//starting balance
-
-//betting system
-
-//a continue playing option
-
-//scoring system
