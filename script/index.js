@@ -9,11 +9,11 @@ const user = new User("user");
 
 function slotMachineNum() {
   const number = [];
-  const indexOne = Math.floor(Math.random() * 10);
-  const indexTwo = Math.floor(Math.random() * 10);
-  const indexThree = Math.floor(Math.random() * 10);
 
-  number.push(indexOne, indexTwo, indexThree);
+  for (let i = 0; i < 3; i++) {
+    number.push(Math.floor(Math.random() * 10));
+  }
+
   return number.join("");
 }
 
@@ -21,24 +21,34 @@ function viewBalance() {
   alert(`your balance is $${user.balance}`);
 }
 
+function depositMoney() {
+  const moneyInput = Number(
+    prompt(`how much money would you like to deposit?`)
+  );
+  user.balance += moneyInput;
+}
+
 function spin() {
   const bet = prompt(`place your bets ${user.name}`);
-  const number = slotMachineNum();
-  alert(`${number}`);
-  if (number === "111" || number === "222" || number === "333") {
-    alert(`JACKPOT!`);
-    user.balance += bet * 1.2;
-    alert(`your balance is now $${user.balance}`);
-  } else if (number === "444" || number === "555" || number === "666") {
-    alert(`JACKPOT!`);
-    user.balance += bet * 1.5;
-    alert(`your balance is now $${user.balance}`);
-  } else if (number === "777" || number === "888" || number === "999") {
-    alert(`JACKPOT!`);
-    user.balance += bet * 2;
-    alert(`your balance is now $${user.balance}`);
+  if (user.balance >= bet) {
+    user.balance -= bet;
+    const number = slotMachineNum();
+    alert(`${number}`);
+    if (number === "111" || number === "222" || number === "333") {
+      alert(`JACKPOT!`);
+      user.balance += bet * 2;
+    } else if (number === "444" || number === "555" || number === "666") {
+      alert(`JACKPOT!`);
+      user.balance += bet * 5;
+    } else if (number === "777" || number === "888" || number === "999") {
+      alert(`JACKPOT!`);
+      user.balance += bet * 10;
+    } else {
+      alert("better luck next time");
+    }
+    viewBalance();
   } else {
-    alert("better luck next time");
+    alert(`You don't have enough money to make that bet`);
   }
 }
 
@@ -46,14 +56,17 @@ function Menu() {
   while (true) {
     const menuInput = prompt(`
     [1] View Balance
-    [2] Place bet and Spin
-    [3] Quit
+    [2] Deposit Money
+    [3] Place bet and Spin
+    [4] Quit
     `);
     if (menuInput === "1") {
       viewBalance();
     } else if (menuInput === "2") {
-      spin();
+      depositMoney();
     } else if (menuInput === "3") {
+      spin();
+    } else if (menuInput === "4") {
       return false;
     }
   }
